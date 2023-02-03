@@ -1,15 +1,23 @@
+import { Container } from '@mui/material';
 import type { GetAnnouncementQuery } from 'graphql/generated';
 import type { GetServerSideProps, NextPage } from 'next';
+import { useMemo } from 'react';
 
+import Announcement from '@/components/Announcement';
 import { Meta } from '@/layouts/Meta';
 import AnnouncementService from '@/services/cms/announcement';
 import { Main } from '@/templates/Main';
 
 interface IndexProps {
-  announcement: GetAnnouncementQuery;
+  announcementQuery: GetAnnouncementQuery;
 }
 
-const Index: NextPage<IndexProps> = ({ announcement }) => {
+const Index: NextPage<IndexProps> = ({ announcementQuery }) => {
+  const announcement = useMemo(
+    () => announcementQuery.announcement?.data?.attributes,
+    [announcementQuery]
+  );
+
   return (
     <Main
       meta={
@@ -19,8 +27,11 @@ const Index: NextPage<IndexProps> = ({ announcement }) => {
         />
       }
     >
-      <h1>{announcement.announcement?.data?.attributes?.title}</h1>
-      <p>{announcement.announcement?.data?.attributes?.deck}</p>
+      <Announcement headline={announcement?.title} deck={announcement?.deck} />
+
+      <Container>
+        <p>conteúdo da página</p>
+      </Container>
     </Main>
   );
 };
@@ -30,7 +41,7 @@ export const getServerSideProps: GetServerSideProps<IndexProps> = async () => {
 
   return {
     props: {
-      announcement: announcement.data,
+      announcementQuery: announcement.data,
     },
   };
 };

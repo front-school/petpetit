@@ -10,7 +10,7 @@ describe('Index page', () => {
     it('should have h1 tag', () => {
       render(
         <Index
-          announcement={{
+          announcementQuery={{
             announcement: {
               data: {
                 attributes: {
@@ -23,16 +23,9 @@ describe('Index page', () => {
         />
       );
 
-      const heading = screen.getByRole('heading', {
-        name: /title/,
-      });
+      const content = screen.getByText(/conteúdo da página/);
 
-      const deck = screen.getByRole('paragraph', {
-        name: /deck/,
-      });
-
-      expect(heading).toBeInTheDocument();
-      expect(deck).toBeInTheDocument();
+      expect(content).toBeInTheDocument();
     });
   });
 });

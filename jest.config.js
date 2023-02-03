@@ -11,6 +11,7 @@ const customJestConfig = {
     '^@/(.*)$': '<rootDir>/src/$1',
 
     '^@/public/(.*)$': '<rootDir>/public/$1',
+    'graphql/generated(.*)$': '<rootDir>/graphql/generated/$1',
   },
   setupFilesAfterEnv: ['./jest.setup.js'],
   clearMocks: true,
