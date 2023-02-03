@@ -73,6 +73,30 @@ export type BooleanFilterInput = {
   startsWith?: InputMaybe<Scalars['Boolean']>;
 };
 
+export type ComponentThemingProductTheme = {
+  __typename?: 'ComponentThemingProductTheme';
+  darkenColor: Scalars['String'];
+  id: Scalars['ID'];
+  lightenColor: Scalars['String'];
+  mainColor: Scalars['String'];
+};
+
+export type ComponentThemingProductThemeFiltersInput = {
+  and?: InputMaybe<Array<InputMaybe<ComponentThemingProductThemeFiltersInput>>>;
+  darkenColor?: InputMaybe<StringFilterInput>;
+  lightenColor?: InputMaybe<StringFilterInput>;
+  mainColor?: InputMaybe<StringFilterInput>;
+  not?: InputMaybe<ComponentThemingProductThemeFiltersInput>;
+  or?: InputMaybe<Array<InputMaybe<ComponentThemingProductThemeFiltersInput>>>;
+};
+
+export type ComponentThemingProductThemeInput = {
+  darkenColor?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
+  lightenColor?: InputMaybe<Scalars['String']>;
+  mainColor?: InputMaybe<Scalars['String']>;
+};
+
 export type DateTimeFilterInput = {
   and?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
   between?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
@@ -129,8 +153,10 @@ export type FloatFilterInput = {
 
 export type GenericMorph =
   | Announcement
+  | ComponentThemingProductTheme
   | I18NLocale
   | Post
+  | ProductTheme
   | UploadFile
   | UploadFolder
   | UsersPermissionsPermission
@@ -250,6 +276,7 @@ export type Mutation = {
   /** Change user password. Confirm with the current password. */
   changePassword?: Maybe<UsersPermissionsLoginPayload>;
   createPost?: Maybe<PostEntityResponse>;
+  createProductTheme?: Maybe<ProductThemeEntityResponse>;
   createUploadFile?: Maybe<UploadFileEntityResponse>;
   createUploadFolder?: Maybe<UploadFolderEntityResponse>;
   /** Create a new role */
@@ -258,6 +285,7 @@ export type Mutation = {
   createUsersPermissionsUser: UsersPermissionsUserEntityResponse;
   deleteAnnouncement?: Maybe<AnnouncementEntityResponse>;
   deletePost?: Maybe<PostEntityResponse>;
+  deleteProductTheme?: Maybe<ProductThemeEntityResponse>;
   deleteUploadFile?: Maybe<UploadFileEntityResponse>;
   deleteUploadFolder?: Maybe<UploadFolderEntityResponse>;
   /** Delete an existing role */
@@ -278,6 +306,7 @@ export type Mutation = {
   updateAnnouncement?: Maybe<AnnouncementEntityResponse>;
   updateFileInfo: UploadFileEntityResponse;
   updatePost?: Maybe<PostEntityResponse>;
+  updateProductTheme?: Maybe<ProductThemeEntityResponse>;
   updateUploadFile?: Maybe<UploadFileEntityResponse>;
   updateUploadFolder?: Maybe<UploadFolderEntityResponse>;
   /** Update an existing role */
@@ -297,6 +326,10 @@ export type MutationCreatePostArgs = {
   data: PostInput;
 };
 
+export type MutationCreateProductThemeArgs = {
+  data: ProductThemeInput;
+};
+
 export type MutationCreateUploadFileArgs = {
   data: UploadFileInput;
 };
@@ -314,6 +347,10 @@ export type MutationCreateUsersPermissionsUserArgs = {
 };
 
 export type MutationDeletePostArgs = {
+  id: Scalars['ID'];
+};
+
+export type MutationDeleteProductThemeArgs = {
   id: Scalars['ID'];
 };
 
@@ -377,6 +414,11 @@ export type MutationUpdateFileInfoArgs = {
 
 export type MutationUpdatePostArgs = {
   data: PostInput;
+  id: Scalars['ID'];
+};
+
+export type MutationUpdateProductThemeArgs = {
+  data: ProductThemeInput;
   id: Scalars['ID'];
 };
 
@@ -475,6 +517,56 @@ export type PostInput = {
   title?: InputMaybe<Scalars['String']>;
 };
 
+export type ProductTheme = {
+  __typename?: 'ProductTheme';
+  createdAt?: Maybe<Scalars['DateTime']>;
+  description: Scalars['String'];
+  publishedAt?: Maybe<Scalars['DateTime']>;
+  slug?: Maybe<Scalars['String']>;
+  theme?: Maybe<ComponentThemingProductTheme>;
+  title: Scalars['String'];
+  updatedAt?: Maybe<Scalars['DateTime']>;
+};
+
+export type ProductThemeEntity = {
+  __typename?: 'ProductThemeEntity';
+  attributes?: Maybe<ProductTheme>;
+  id?: Maybe<Scalars['ID']>;
+};
+
+export type ProductThemeEntityResponse = {
+  __typename?: 'ProductThemeEntityResponse';
+  data?: Maybe<ProductThemeEntity>;
+};
+
+export type ProductThemeEntityResponseCollection = {
+  __typename?: 'ProductThemeEntityResponseCollection';
+  data: Array<ProductThemeEntity>;
+  meta: ResponseCollectionMeta;
+};
+
+export type ProductThemeFiltersInput = {
+  and?: InputMaybe<Array<InputMaybe<ProductThemeFiltersInput>>>;
+  createdAt?: InputMaybe<DateTimeFilterInput>;
+  description?: InputMaybe<StringFilterInput>;
+  id?: InputMaybe<IdFilterInput>;
+  not?: InputMaybe<ProductThemeFiltersInput>;
+  or?: InputMaybe<Array<InputMaybe<ProductThemeFiltersInput>>>;
+  publishedAt?: InputMaybe<DateTimeFilterInput>;
+  slug?: InputMaybe<StringFilterInput>;
+  theme?: InputMaybe<ComponentThemingProductThemeFiltersInput>;
+  title?: InputMaybe<StringFilterInput>;
+  updatedAt?: InputMaybe<DateTimeFilterInput>;
+};
+
+export type ProductThemeInput = {
+  description?: InputMaybe<Scalars['String']>;
+  publishedAt?: InputMaybe<Scalars['DateTime']>;
+  slug?: InputMaybe<Scalars['String']>;
+  theme?: InputMaybe<ComponentThemingProductThemeInput>;
+  title?: InputMaybe<Scalars['String']>;
+};
+
 export enum PublicationState {
   Live = 'LIVE',
   Preview = 'PREVIEW',
@@ -488,6 +580,8 @@ export type Query = {
   me?: Maybe<UsersPermissionsMe>;
   post?: Maybe<PostEntityResponse>;
   posts?: Maybe<PostEntityResponseCollection>;
+  productTheme?: Maybe<ProductThemeEntityResponse>;
+  productThemes?: Maybe<ProductThemeEntityResponseCollection>;
   uploadFile?: Maybe<UploadFileEntityResponse>;
   uploadFiles?: Maybe<UploadFileEntityResponseCollection>;
   uploadFolder?: Maybe<UploadFolderEntityResponse>;
@@ -518,6 +612,17 @@ export type QueryPostArgs = {
 
 export type QueryPostsArgs = {
   filters?: InputMaybe<PostFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  publicationState?: InputMaybe<PublicationState>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type QueryProductThemeArgs = {
+  id?: InputMaybe<Scalars['ID']>;
+};
+
+export type QueryProductThemesArgs = {
+  filters?: InputMaybe<ProductThemeFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   publicationState?: InputMaybe<PublicationState>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
@@ -978,6 +1083,31 @@ export type GetAnnouncementQuery = {
   } | null;
 };
 
+export type GetProductThemesQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetProductThemesQuery = {
+  __typename?: 'Query';
+  productThemes?: {
+    __typename?: 'ProductThemeEntityResponseCollection';
+    data: Array<{
+      __typename?: 'ProductThemeEntity';
+      id?: string | null;
+      attributes?: {
+        __typename?: 'ProductTheme';
+        title: string;
+        description: string;
+        slug?: string | null;
+        theme?: {
+          __typename?: 'ComponentThemingProductTheme';
+          mainColor: string;
+          darkenColor: string;
+          lightenColor: string;
+        } | null;
+      } | null;
+    }>;
+  } | null;
+};
+
 export const GetAnnouncementDocument = {
   kind: 'Document',
   definitions: [
@@ -1030,4 +1160,89 @@ export const GetAnnouncementDocument = {
 } as unknown as DocumentNode<
   GetAnnouncementQuery,
   GetAnnouncementQueryVariables
+>;
+export const GetProductThemesDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GetProductThemes' },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'productThemes' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'data' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'attributes' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'title' },
+                            },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'description' },
+                            },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'slug' },
+                            },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'theme' },
+                              selectionSet: {
+                                kind: 'SelectionSet',
+                                selections: [
+                                  {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'mainColor' },
+                                  },
+                                  {
+                                    kind: 'Field',
+                                    name: {
+                                      kind: 'Name',
+                                      value: 'darkenColor',
+                                    },
+                                  },
+                                  {
+                                    kind: 'Field',
+                                    name: {
+                                      kind: 'Name',
+                                      value: 'lightenColor',
+                                    },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetProductThemesQuery,
+  GetProductThemesQueryVariables
 >;

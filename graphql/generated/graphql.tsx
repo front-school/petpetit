@@ -75,6 +75,30 @@ export type BooleanFilterInput = {
   startsWith?: InputMaybe<Scalars['Boolean']>;
 };
 
+export type ComponentThemingProductTheme = {
+  __typename?: 'ComponentThemingProductTheme';
+  darkenColor: Scalars['String'];
+  id: Scalars['ID'];
+  lightenColor: Scalars['String'];
+  mainColor: Scalars['String'];
+};
+
+export type ComponentThemingProductThemeFiltersInput = {
+  and?: InputMaybe<Array<InputMaybe<ComponentThemingProductThemeFiltersInput>>>;
+  darkenColor?: InputMaybe<StringFilterInput>;
+  lightenColor?: InputMaybe<StringFilterInput>;
+  mainColor?: InputMaybe<StringFilterInput>;
+  not?: InputMaybe<ComponentThemingProductThemeFiltersInput>;
+  or?: InputMaybe<Array<InputMaybe<ComponentThemingProductThemeFiltersInput>>>;
+};
+
+export type ComponentThemingProductThemeInput = {
+  darkenColor?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
+  lightenColor?: InputMaybe<Scalars['String']>;
+  mainColor?: InputMaybe<Scalars['String']>;
+};
+
 export type DateTimeFilterInput = {
   and?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
   between?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
@@ -131,8 +155,10 @@ export type FloatFilterInput = {
 
 export type GenericMorph =
   | Announcement
+  | ComponentThemingProductTheme
   | I18NLocale
   | Post
+  | ProductTheme
   | UploadFile
   | UploadFolder
   | UsersPermissionsPermission
@@ -252,6 +278,7 @@ export type Mutation = {
   /** Change user password. Confirm with the current password. */
   changePassword?: Maybe<UsersPermissionsLoginPayload>;
   createPost?: Maybe<PostEntityResponse>;
+  createProductTheme?: Maybe<ProductThemeEntityResponse>;
   createUploadFile?: Maybe<UploadFileEntityResponse>;
   createUploadFolder?: Maybe<UploadFolderEntityResponse>;
   /** Create a new role */
@@ -260,6 +287,7 @@ export type Mutation = {
   createUsersPermissionsUser: UsersPermissionsUserEntityResponse;
   deleteAnnouncement?: Maybe<AnnouncementEntityResponse>;
   deletePost?: Maybe<PostEntityResponse>;
+  deleteProductTheme?: Maybe<ProductThemeEntityResponse>;
   deleteUploadFile?: Maybe<UploadFileEntityResponse>;
   deleteUploadFolder?: Maybe<UploadFolderEntityResponse>;
   /** Delete an existing role */
@@ -280,6 +308,7 @@ export type Mutation = {
   updateAnnouncement?: Maybe<AnnouncementEntityResponse>;
   updateFileInfo: UploadFileEntityResponse;
   updatePost?: Maybe<PostEntityResponse>;
+  updateProductTheme?: Maybe<ProductThemeEntityResponse>;
   updateUploadFile?: Maybe<UploadFileEntityResponse>;
   updateUploadFolder?: Maybe<UploadFolderEntityResponse>;
   /** Update an existing role */
@@ -299,6 +328,10 @@ export type MutationCreatePostArgs = {
   data: PostInput;
 };
 
+export type MutationCreateProductThemeArgs = {
+  data: ProductThemeInput;
+};
+
 export type MutationCreateUploadFileArgs = {
   data: UploadFileInput;
 };
@@ -316,6 +349,10 @@ export type MutationCreateUsersPermissionsUserArgs = {
 };
 
 export type MutationDeletePostArgs = {
+  id: Scalars['ID'];
+};
+
+export type MutationDeleteProductThemeArgs = {
   id: Scalars['ID'];
 };
 
@@ -379,6 +416,11 @@ export type MutationUpdateFileInfoArgs = {
 
 export type MutationUpdatePostArgs = {
   data: PostInput;
+  id: Scalars['ID'];
+};
+
+export type MutationUpdateProductThemeArgs = {
+  data: ProductThemeInput;
   id: Scalars['ID'];
 };
 
@@ -477,6 +519,56 @@ export type PostInput = {
   title?: InputMaybe<Scalars['String']>;
 };
 
+export type ProductTheme = {
+  __typename?: 'ProductTheme';
+  createdAt?: Maybe<Scalars['DateTime']>;
+  description: Scalars['String'];
+  publishedAt?: Maybe<Scalars['DateTime']>;
+  slug?: Maybe<Scalars['String']>;
+  theme?: Maybe<ComponentThemingProductTheme>;
+  title: Scalars['String'];
+  updatedAt?: Maybe<Scalars['DateTime']>;
+};
+
+export type ProductThemeEntity = {
+  __typename?: 'ProductThemeEntity';
+  attributes?: Maybe<ProductTheme>;
+  id?: Maybe<Scalars['ID']>;
+};
+
+export type ProductThemeEntityResponse = {
+  __typename?: 'ProductThemeEntityResponse';
+  data?: Maybe<ProductThemeEntity>;
+};
+
+export type ProductThemeEntityResponseCollection = {
+  __typename?: 'ProductThemeEntityResponseCollection';
+  data: Array<ProductThemeEntity>;
+  meta: ResponseCollectionMeta;
+};
+
+export type ProductThemeFiltersInput = {
+  and?: InputMaybe<Array<InputMaybe<ProductThemeFiltersInput>>>;
+  createdAt?: InputMaybe<DateTimeFilterInput>;
+  description?: InputMaybe<StringFilterInput>;
+  id?: InputMaybe<IdFilterInput>;
+  not?: InputMaybe<ProductThemeFiltersInput>;
+  or?: InputMaybe<Array<InputMaybe<ProductThemeFiltersInput>>>;
+  publishedAt?: InputMaybe<DateTimeFilterInput>;
+  slug?: InputMaybe<StringFilterInput>;
+  theme?: InputMaybe<ComponentThemingProductThemeFiltersInput>;
+  title?: InputMaybe<StringFilterInput>;
+  updatedAt?: InputMaybe<DateTimeFilterInput>;
+};
+
+export type ProductThemeInput = {
+  description?: InputMaybe<Scalars['String']>;
+  publishedAt?: InputMaybe<Scalars['DateTime']>;
+  slug?: InputMaybe<Scalars['String']>;
+  theme?: InputMaybe<ComponentThemingProductThemeInput>;
+  title?: InputMaybe<Scalars['String']>;
+};
+
 export enum PublicationState {
   Live = 'LIVE',
   Preview = 'PREVIEW',
@@ -490,6 +582,8 @@ export type Query = {
   me?: Maybe<UsersPermissionsMe>;
   post?: Maybe<PostEntityResponse>;
   posts?: Maybe<PostEntityResponseCollection>;
+  productTheme?: Maybe<ProductThemeEntityResponse>;
+  productThemes?: Maybe<ProductThemeEntityResponseCollection>;
   uploadFile?: Maybe<UploadFileEntityResponse>;
   uploadFiles?: Maybe<UploadFileEntityResponseCollection>;
   uploadFolder?: Maybe<UploadFolderEntityResponse>;
@@ -520,6 +614,17 @@ export type QueryPostArgs = {
 
 export type QueryPostsArgs = {
   filters?: InputMaybe<PostFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  publicationState?: InputMaybe<PublicationState>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type QueryProductThemeArgs = {
+  id?: InputMaybe<Scalars['ID']>;
+};
+
+export type QueryProductThemesArgs = {
+  filters?: InputMaybe<ProductThemeFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   publicationState?: InputMaybe<PublicationState>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
@@ -980,6 +1085,31 @@ export type GetAnnouncementQuery = {
   } | null;
 };
 
+export type GetProductThemesQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetProductThemesQuery = {
+  __typename?: 'Query';
+  productThemes?: {
+    __typename?: 'ProductThemeEntityResponseCollection';
+    data: Array<{
+      __typename?: 'ProductThemeEntity';
+      id?: string | null;
+      attributes?: {
+        __typename?: 'ProductTheme';
+        title: string;
+        description: string;
+        slug?: string | null;
+        theme?: {
+          __typename?: 'ComponentThemingProductTheme';
+          mainColor: string;
+          darkenColor: string;
+          lightenColor: string;
+        } | null;
+      } | null;
+    }>;
+  } | null;
+};
+
 export const GetAnnouncementApolloDocument = gql`
   query GetAnnouncement {
     announcement {
@@ -1041,4 +1171,73 @@ export type GetAnnouncementLazyQueryHookResult = ReturnType<
 export type GetAnnouncementQueryResult = Apollo.QueryResult<
   GetAnnouncementQuery,
   GetAnnouncementQueryVariables
+>;
+export const GetProductThemesApolloDocument = gql`
+  query GetProductThemes {
+    productThemes {
+      data {
+        id
+        attributes {
+          title
+          description
+          slug
+          theme {
+            mainColor
+            darkenColor
+            lightenColor
+          }
+        }
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetProductThemesQuery__
+ *
+ * To run a query within a React component, call `useGetProductThemesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetProductThemesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetProductThemesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetProductThemesQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    GetProductThemesQuery,
+    GetProductThemesQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetProductThemesQuery, GetProductThemesQueryVariables>(
+    GetProductThemesApolloDocument,
+    options
+  );
+}
+export function useGetProductThemesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetProductThemesQuery,
+    GetProductThemesQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetProductThemesQuery,
+    GetProductThemesQueryVariables
+  >(GetProductThemesApolloDocument, options);
+}
+export type GetProductThemesQueryHookResult = ReturnType<
+  typeof useGetProductThemesQuery
+>;
+export type GetProductThemesLazyQueryHookResult = ReturnType<
+  typeof useGetProductThemesLazyQuery
+>;
+export type GetProductThemesQueryResult = Apollo.QueryResult<
+  GetProductThemesQuery,
+  GetProductThemesQueryVariables
 >;

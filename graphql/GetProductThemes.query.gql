@@ -1,0 +1,17 @@
+query GetProductThemes{
+  productThemes {
+    data {
+      id
+      attributes {
+        title
+        description
+        slug
+        theme {
+          mainColor
+          darkenColor
+          lightenColor
+        }
+      }
+    }
+  }
+}

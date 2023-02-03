@@ -4,6 +4,7 @@ import type { GetServerSideProps, NextPage } from 'next';
 import { useMemo } from 'react';
 
 import Announcement from '@/components/Announcement';
+import Header from '@/components/Header';
 import { Meta } from '@/layouts/Meta';
 import AnnouncementService from '@/services/cms/announcement';
 import { Main } from '@/templates/Main';
@@ -28,6 +29,7 @@ const Index: NextPage<IndexProps> = ({ announcementQuery }) => {
       }
     >
       <Announcement headline={announcement?.title} deck={announcement?.deck} />
+      <Header />
 
       <Container>
         <p>conteúdo da página</p>

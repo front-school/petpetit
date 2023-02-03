@@ -9,7 +9,7 @@ const apolloClient = new ApolloClient({
 });
 
 class Service {
-  static apollo = apolloClient;
+  public static apollo = apolloClient;
 }
 
 export default Service;

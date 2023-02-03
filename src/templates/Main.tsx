@@ -10,6 +10,7 @@ const Main = (props: IMainProps) => (
     {props.meta}
 
     <div id="announcement"></div>
+    <div id="header"></div>
 
     {props.children}
   </div>
