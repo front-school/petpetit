@@ -10,6 +10,9 @@ describe('Index page', () => {
     it('should have h1 tag', () => {
       render(
         <Index
+          secondaryAnnouncementQuery={{
+            secondaryAnnouncement: null,
+          }}
           announcementQuery={{
             announcement: {
               data: {

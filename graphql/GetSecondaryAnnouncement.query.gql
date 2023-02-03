@@ -1,0 +1,27 @@
+query GetSecondaryAnnouncement {
+  secondaryAnnouncement: secondaryAnnouncement {
+    data {
+      attributes {
+        title
+        image {
+          data {
+            attributes {
+              name
+              url
+              alternativeText
+            }
+          }
+        }
+        mobileImage {
+          data {
+            attributes {
+              name
+              url
+              alternativeText
+            }
+          }
+        }
+      }
+    }
+  }
+}

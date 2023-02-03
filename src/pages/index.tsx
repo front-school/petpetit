@@ -1,21 +1,33 @@
 import { Container } from '@mui/material';
-import type { GetAnnouncementQuery } from 'graphql/generated';
+import type {
+  GetAnnouncementQuery,
+  GetSecondaryAnnouncementQuery,
+} from 'graphql/generated';
 import type { GetStaticProps, NextPage } from 'next';
 import { useMemo } from 'react';
 
 import Announcement from '@/components/Announcement';
 import Header from '@/components/Header';
+import SecondaryAnnouncement from '@/components/SecondaryAnnouncement';
 import { Meta } from '@/layouts/Meta';
 import AnnouncementService from '@/services/cms/announcement';
 import { Main } from '@/templates/Main';
 
 interface IndexProps {
   announcementQuery: GetAnnouncementQuery;
+  secondaryAnnouncementQuery: GetSecondaryAnnouncementQuery;
 }
 
-const Index: NextPage<IndexProps> = ({ announcementQuery }) => {
+const Index: NextPage<IndexProps> = ({
+  announcementQuery,
+  secondaryAnnouncementQuery,
+}) => {
   const announcement = useMemo(
     () => announcementQuery.announcement?.data?.attributes,
+    [announcementQuery]
+  );
+  const secondaryAnnouncement = useMemo(
+    () => secondaryAnnouncementQuery.secondaryAnnouncement?.data?.attributes,
     [announcementQuery]
   );
 
@@ -30,6 +42,13 @@ const Index: NextPage<IndexProps> = ({ announcementQuery }) => {
     >
       <Announcement headline={announcement?.title} deck={announcement?.deck} />
       <Header />
+      <SecondaryAnnouncement
+        mobileImageUrl={
+          secondaryAnnouncement?.mobileImage?.data?.attributes?.url
+        }
+        headline={secondaryAnnouncement?.title}
+        imageUrl={secondaryAnnouncement?.image?.data?.attributes?.url}
+      />
 
       <Container>
         <p>conteúdo da página</p>
@@ -40,10 +59,12 @@ const Index: NextPage<IndexProps> = ({ announcementQuery }) => {
 
 export const getStaticProps: GetStaticProps<IndexProps> = async () => {
   const announcement = await AnnouncementService.get();
+  const secondaryAnnouncement = await AnnouncementService.getSecondary();
 
   return {
     props: {
       announcementQuery: announcement.data,
+      secondaryAnnouncementQuery: secondaryAnnouncement.data,
     },
   };
 };

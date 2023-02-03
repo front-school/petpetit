@@ -9,8 +9,9 @@ const Main = (props: IMainProps) => (
   <div className="w-full text-gray-700 antialiased">
     {props.meta}
 
-    <div id="announcement"></div>
-    <div id="header"></div>
+    <div id="announcement" />
+    <div id="header" />
+    <div id="secondary-announcement" />
 
     {props.children}
   </div>

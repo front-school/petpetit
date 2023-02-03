@@ -159,6 +159,7 @@ export type GenericMorph =
   | I18NLocale
   | Post
   | ProductTheme
+  | SecondaryAnnouncement
   | UploadFile
   | UploadFolder
   | UsersPermissionsPermission
@@ -288,6 +289,7 @@ export type Mutation = {
   deleteAnnouncement?: Maybe<AnnouncementEntityResponse>;
   deletePost?: Maybe<PostEntityResponse>;
   deleteProductTheme?: Maybe<ProductThemeEntityResponse>;
+  deleteSecondaryAnnouncement?: Maybe<SecondaryAnnouncementEntityResponse>;
   deleteUploadFile?: Maybe<UploadFileEntityResponse>;
   deleteUploadFolder?: Maybe<UploadFolderEntityResponse>;
   /** Delete an existing role */
@@ -309,6 +311,7 @@ export type Mutation = {
   updateFileInfo: UploadFileEntityResponse;
   updatePost?: Maybe<PostEntityResponse>;
   updateProductTheme?: Maybe<ProductThemeEntityResponse>;
+  updateSecondaryAnnouncement?: Maybe<SecondaryAnnouncementEntityResponse>;
   updateUploadFile?: Maybe<UploadFileEntityResponse>;
   updateUploadFolder?: Maybe<UploadFolderEntityResponse>;
   /** Update an existing role */
@@ -422,6 +425,10 @@ export type MutationUpdatePostArgs = {
 export type MutationUpdateProductThemeArgs = {
   data: ProductThemeInput;
   id: Scalars['ID'];
+};
+
+export type MutationUpdateSecondaryAnnouncementArgs = {
+  data: SecondaryAnnouncementInput;
 };
 
 export type MutationUpdateUploadFileArgs = {
@@ -584,6 +591,7 @@ export type Query = {
   posts?: Maybe<PostEntityResponseCollection>;
   productTheme?: Maybe<ProductThemeEntityResponse>;
   productThemes?: Maybe<ProductThemeEntityResponseCollection>;
+  secondaryAnnouncement?: Maybe<SecondaryAnnouncementEntityResponse>;
   uploadFile?: Maybe<UploadFileEntityResponse>;
   uploadFiles?: Maybe<UploadFileEntityResponseCollection>;
   uploadFolder?: Maybe<UploadFolderEntityResponse>;
@@ -630,6 +638,10 @@ export type QueryProductThemesArgs = {
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
+export type QuerySecondaryAnnouncementArgs = {
+  publicationState?: InputMaybe<PublicationState>;
+};
+
 export type QueryUploadFileArgs = {
   id?: InputMaybe<Scalars['ID']>;
 };
@@ -673,6 +685,34 @@ export type QueryUsersPermissionsUsersArgs = {
 export type ResponseCollectionMeta = {
   __typename?: 'ResponseCollectionMeta';
   pagination: Pagination;
+};
+
+export type SecondaryAnnouncement = {
+  __typename?: 'SecondaryAnnouncement';
+  createdAt?: Maybe<Scalars['DateTime']>;
+  image?: Maybe<UploadFileEntityResponse>;
+  mobileImage?: Maybe<UploadFileEntityResponse>;
+  publishedAt?: Maybe<Scalars['DateTime']>;
+  title: Scalars['String'];
+  updatedAt?: Maybe<Scalars['DateTime']>;
+};
+
+export type SecondaryAnnouncementEntity = {
+  __typename?: 'SecondaryAnnouncementEntity';
+  attributes?: Maybe<SecondaryAnnouncement>;
+  id?: Maybe<Scalars['ID']>;
+};
+
+export type SecondaryAnnouncementEntityResponse = {
+  __typename?: 'SecondaryAnnouncementEntityResponse';
+  data?: Maybe<SecondaryAnnouncementEntity>;
+};
+
+export type SecondaryAnnouncementInput = {
+  image?: InputMaybe<Scalars['ID']>;
+  mobileImage?: InputMaybe<Scalars['ID']>;
+  publishedAt?: InputMaybe<Scalars['DateTime']>;
+  title?: InputMaybe<Scalars['String']>;
 };
 
 export type StringFilterInput = {
@@ -1110,6 +1150,48 @@ export type GetProductThemesQuery = {
   } | null;
 };
 
+export type GetSecondaryAnnouncementQueryVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type GetSecondaryAnnouncementQuery = {
+  __typename?: 'Query';
+  secondaryAnnouncement?: {
+    __typename?: 'SecondaryAnnouncementEntityResponse';
+    data?: {
+      __typename?: 'SecondaryAnnouncementEntity';
+      attributes?: {
+        __typename?: 'SecondaryAnnouncement';
+        title: string;
+        image?: {
+          __typename?: 'UploadFileEntityResponse';
+          data?: {
+            __typename?: 'UploadFileEntity';
+            attributes?: {
+              __typename?: 'UploadFile';
+              name: string;
+              url: string;
+              alternativeText?: string | null;
+            } | null;
+          } | null;
+        } | null;
+        mobileImage?: {
+          __typename?: 'UploadFileEntityResponse';
+          data?: {
+            __typename?: 'UploadFileEntity';
+            attributes?: {
+              __typename?: 'UploadFile';
+              name: string;
+              url: string;
+              alternativeText?: string | null;
+            } | null;
+          } | null;
+        } | null;
+      } | null;
+    } | null;
+  } | null;
+};
+
 export const GetAnnouncementApolloDocument = gql`
   query GetAnnouncement {
     announcement {
@@ -1240,4 +1322,83 @@ export type GetProductThemesLazyQueryHookResult = ReturnType<
 export type GetProductThemesQueryResult = Apollo.QueryResult<
   GetProductThemesQuery,
   GetProductThemesQueryVariables
+>;
+export const GetSecondaryAnnouncementApolloDocument = gql`
+  query GetSecondaryAnnouncement {
+    secondaryAnnouncement: secondaryAnnouncement {
+      data {
+        attributes {
+          title
+          image {
+            data {
+              attributes {
+                name
+                url
+                alternativeText
+              }
+            }
+          }
+          mobileImage {
+            data {
+              attributes {
+                name
+                url
+                alternativeText
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetSecondaryAnnouncementQuery__
+ *
+ * To run a query within a React component, call `useGetSecondaryAnnouncementQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetSecondaryAnnouncementQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetSecondaryAnnouncementQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetSecondaryAnnouncementQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    GetSecondaryAnnouncementQuery,
+    GetSecondaryAnnouncementQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    GetSecondaryAnnouncementQuery,
+    GetSecondaryAnnouncementQueryVariables
+  >(GetSecondaryAnnouncementApolloDocument, options);
+}
+export function useGetSecondaryAnnouncementLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetSecondaryAnnouncementQuery,
+    GetSecondaryAnnouncementQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetSecondaryAnnouncementQuery,
+    GetSecondaryAnnouncementQueryVariables
+  >(GetSecondaryAnnouncementApolloDocument, options);
+}
+export type GetSecondaryAnnouncementQueryHookResult = ReturnType<
+  typeof useGetSecondaryAnnouncementQuery
+>;
+export type GetSecondaryAnnouncementLazyQueryHookResult = ReturnType<
+  typeof useGetSecondaryAnnouncementLazyQuery
+>;
+export type GetSecondaryAnnouncementQueryResult = Apollo.QueryResult<
+  GetSecondaryAnnouncementQuery,
+  GetSecondaryAnnouncementQueryVariables
 >;
