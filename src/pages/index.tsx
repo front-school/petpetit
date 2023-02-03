@@ -1,6 +1,6 @@
 import { Container } from '@mui/material';
 import type { GetAnnouncementQuery } from 'graphql/generated';
-import type { GetServerSideProps, NextPage } from 'next';
+import type { GetStaticProps, NextPage } from 'next';
 import { useMemo } from 'react';
 
 import Announcement from '@/components/Announcement';
@@ -38,7 +38,7 @@ const Index: NextPage<IndexProps> = ({ announcementQuery }) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps<IndexProps> = async () => {
+export const getStaticProps: GetStaticProps<IndexProps> = async () => {
   const announcement = await AnnouncementService.get();
 
   return {
