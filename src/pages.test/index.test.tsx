@@ -8,13 +8,31 @@ import Index from '@/pages/index';
 describe('Index page', () => {
   describe('Render method', () => {
     it('should have h1 tag', () => {
-      render(<Index />);
+      render(
+        <Index
+          announcement={{
+            announcement: {
+              data: {
+                attributes: {
+                  title: 'title',
+                  deck: 'deck',
+                },
+              },
+            },
+          }}
+        />
+      );
 
       const heading = screen.getByRole('heading', {
-        name: /Boilerplate code/,
+        name: /title/,
+      });
+
+      const deck = screen.getByRole('paragraph', {
+        name: /deck/,
       });
 
       expect(heading).toBeInTheDocument();
+      expect(deck).toBeInTheDocument();
     });
   });
 });

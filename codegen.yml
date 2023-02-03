@@ -1,0 +1,24 @@
+overwrite: true
+schema:
+  - "http://localhost:1337/graphql":
+      headers:
+        Authorization: "Bearer ${STRAPI_AUTH_TOKEN}"
+documents: "**/*.{gql,graphql}"
+generates:
+  graphql/generated/index.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+      - typed-document-node
+    config:
+      documentVariableSuffix: "Document"
+  graphql/generated/graphql.tsx:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-react-apollo"
+    config:
+      documentVariableSuffix: "ApolloDocument"
+  ./graphql.schema.json:
+    plugins:
+      - "introspection"

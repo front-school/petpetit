@@ -1,0 +1,10 @@
+query GetAnnouncement{
+  announcement {
+    data {
+      attributes {
+        title
+        deck
+      }
+    }
+  }
+}
